@@ -18,8 +18,8 @@ exec &>> "$LOG_FILE"
 set -e
 
 # Create backups
-tar -czf "$BACKUP_DIR_LOCAL/$TIMESTAMP.tar.gz" -C "$SOURCE_DIR" .
-tar -czf "$BACKUP_DIR_DISTANT/$TIMESTAMP.tar.gz" -C "$SOURCE_DIR" .
+tar -czf "$BACKUP_DIR_LOCAL/$TIMESTAMP.sql" -C "$SOURCE_DIR" .
+tar -czf "$BACKUP_DIR_DISTANT/$TIMESTAMP.sql" -C "$SOURCE_DIR" .
 
 # Keep only the latest 24 backups
 if [ -n "$(ls -A "$BACKUP_DIR_LOCAL")" ]; then
