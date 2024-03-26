@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Function to display help and usage instructions
+# test
 show_help() {
     echo "Usage: $0 [backup directory] <timestamp>"
     echo
@@ -22,10 +23,10 @@ show_help() {
 }
 
 # Default backup directory (used if no specific directory is provided)
-DEFAULT_BACKUP_DIR="/backup/directus_bckp/short_term_bckp"
+DEFAULT_BACKUP_DIR="media/backup/nocodb_bckp/short_term_bckp"
 
 # Original directory to restore
-ORIGINAL_DIR="/prog/directus/database"
+ORIGINAL_DIR="/docker/nocodb/postgres"
 
 # Check for help option
 if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
@@ -56,10 +57,10 @@ fi
 RESTORE_TIMESTAMP="$2"
 
 # Backup archive file name
-BACKUP_ARCHIVE="backup.tar.gz"
+BACKUP_ARCHIVE="$RESTORE_TIMESTAMP.tar.gz"
 
 # Check if the backup exists
-if [ -f "$BACKUP_DIR/$RESTORE_TIMESTAMP/$BACKUP_ARCHIVE" ]; then
+if [ -f "$BACKUP_DIR/$BACKUP_ARCHIVE" ]; then
 
     # Ask for confirmation before clearing the original directory
     read -p "Are you sure you want to clear the original directory and restore the backup? Type '$RESTORE_TIMESTAMP' to confirm: " CONFIRMATION
@@ -68,7 +69,7 @@ if [ -f "$BACKUP_DIR/$RESTORE_TIMESTAMP/$BACKUP_ARCHIVE" ]; then
         rm -rf "$ORIGINAL_DIR"/*
 
         # Extract the backup to the original directory
-        tar -xzf "$BACKUP_DIR/$RESTORE_TIMESTAMP/$BACKUP_ARCHIVE" -C "$ORIGINAL_DIR"
+        tar -xzf "$BACKUP_DIR/$BACKUP_ARCHIVE" -C "$ORIGINAL_DIR"
 
         echo "Directory $ORIGINAL_DIR restored to version $RESTORE_TIMESTAMP"
     else
