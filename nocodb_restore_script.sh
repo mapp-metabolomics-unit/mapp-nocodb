@@ -9,7 +9,7 @@ show_help() {
     echo
     echo "Arguments:"
     echo "  backup directory  The directory where backups are stored."
-    echo "                    If not provided, defaults to '/backup/directus_bckp/short_term_bckp'."
+    echo "                    If not provided, defaults to '/media/backup/nocodb_bckp/short_term_bckp'."
     echo "  timestamp         The timestamp of the backup to restore. Format: YYYYMMDDHHMMSS"
     echo
     echo "Options:"
@@ -23,7 +23,7 @@ show_help() {
 }
 
 # Default backup directory (used if no specific directory is provided)
-DEFAULT_BACKUP_DIR="media/backup/nocodb_bckp/short_term_bckp"
+DEFAULT_BACKUP_DIR="/media/backup/nocodb_bckp/short_term_bckp"
 
 # Original directory to restore
 ORIGINAL_DIR="/docker/nocodb/postgres"
