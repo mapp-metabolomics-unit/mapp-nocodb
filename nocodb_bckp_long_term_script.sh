@@ -23,8 +23,7 @@ tar -czf "${BACKUP_DIR_DISTANT}/${DATE}/backup.tar.gz" -C "$POSTGRES_DIR" .
 
 # Check if backup was successful
 if [ $? -eq 0 ]; then
-    echo "Backup completed successfully: ${BACKUP_DIR_LOCAL}/${DATE}/backup.tar.gz"
-    echo "Backup completed successfully: ${BACKUP_DIR_DISTANT}/${DATE}/backup.tar.gz"
+    echo "Backup completed successfully"
 else
     echo "Backup failed"
     exit 1
@@ -33,15 +32,9 @@ fi
 # Keep only the latest backups
 cleanup_backups() {
     local backup_dir="$1"
-    echo "Cleaning up backups in directory: $backup_dir"
     if [ -n "$(ls -A "$backup_dir")" ]; then
-        echo "Old backups found:"
         ls -dt "$backup_dir"/*
-        echo "Deleting old backups..."
-        ls -dt "$backup_dir"/* | tail -n +"$((RETAIN_BACKUPS+1))" | xargs rm -rf
-        echo "Cleanup complete"
-    else
-        echo "No old backups found"
+        ls -dt "$backup_dir"/* | tail -n +"$((RETAIN_BACKUPS+2))" | xargs rm -rf
     fi
 }
 
