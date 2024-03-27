@@ -57,7 +57,7 @@ fi
 RESTORE_TIMESTAMP="$2"
 
 # Backup archive file name
-BACKUP_ARCHIVE="$RESTORE_TIMESTAMP.tar.gz"
+BACKUP_ARCHIVE="$RESTORE_TIMESTAMP/backup.tar.gz"
 
 # Check if the backup exists
 if [ -f "$BACKUP_DIR/$BACKUP_ARCHIVE" ]; then
