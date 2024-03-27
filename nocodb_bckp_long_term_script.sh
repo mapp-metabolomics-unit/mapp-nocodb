@@ -2,8 +2,8 @@
 
 # Variables
 DATE=$(date +"%Y%m%d%H%M%S")
-BACKUP_DIR_LOCAL="/media/backup/nocodb_bckp/long_term_bckp"
-BACKUP_DIR_DISTANT="/media/share/dbgi/nocodb_bckp/long_term_bckp"
+BACKUP_DIR_LOCAL="/media/backup/nocodb_bckp/long_term_bckp/"
+BACKUP_DIR_DISTANT="/media/share/dbgi/nocodb_bckp/long_term_bckp/"
 LOG_FILE="/media/backup/nocodb_bckp/long_term_bckp/bckp.log"
 RETAIN_BACKUPS=2
 
