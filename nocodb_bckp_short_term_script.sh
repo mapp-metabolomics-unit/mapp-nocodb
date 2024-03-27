@@ -3,8 +3,8 @@
 # Variables
 DATE=$(date +"%Y%m%d%H%M%S")
 POSTGRES_DIR="/docker/nocodb/postgres"
-BACKUP_DIR_LOCAL="/media/backup/nocodb_bckp/short_term_bckp${DATE}"
-BACKUP_DIR_DISTANT="/media/share/dbgi/nocodb_bckp/short_term_bckp${DATE}"
+BACKUP_DIR_LOCAL="/media/backup/nocodb_bckp/short_term_bckp/${DATE}"
+BACKUP_DIR_DISTANT="/media/share/dbgi/nocodb_bckp/short_term_bckp/${DATE}"
 LOG_FILE="/media/backup/nocodb_bckp/short_term_bckp/bckp.log"
 RETAIN_BACKUPS=24
 
