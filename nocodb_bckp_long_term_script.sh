@@ -17,8 +17,8 @@ mkdir -p "${BACKUP_DIR_LOCAL}/${DATE}"
 mkdir -p "${BACKUP_DIR_DISTANT}/${DATE}"
 
 # Perform backup
-tar -czvf "${BACKUP_DIR_LOCAL}/${DATE}/backup.tar.gz" -C "$POSTGRES_DIR" .
-#tar -czvf "${BACKUP_DIR_DISTANT}/${DATE}/backup.tar.gz" -C "$POSTGRES_DIR" .
+tar -czvf "${BACKUP_DIR_LOCAL}/${DATE}/backup.tar.gz" -C "$POSTGRES_DIR"
+tar -czvf "${BACKUP_DIR_DISTANT}/${DATE}/backup.tar.gz" -C "$POSTGRES_DIR"
 
 # Check if backup was successful
 if [ $? -eq 0 ]; then
