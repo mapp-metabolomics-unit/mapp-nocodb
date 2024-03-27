@@ -32,8 +32,15 @@ fi
 # Keep only the latest backups
 cleanup_backups() {
     local backup_dir="$1"
+    echo "Cleaning up backups in directory: $backup_dir"
     if [ -n "$(ls -A "$backup_dir")" ]; then
+        echo "Old backups found:"
+        ls -dt "$backup_dir"/*
+        echo "Deleting old backups..."
         ls -dt "$backup_dir"/* | tail -n +"$((RETAIN_BACKUPS+1))" | xargs rm -rf
+        echo "Cleanup complete"
+    else
+        echo "No old backups found"
     fi
 }
 
