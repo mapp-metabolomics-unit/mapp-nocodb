@@ -1,15 +1,11 @@
 #!/bin/bash
 
-# PostgreSQL settings
-DB_NAME="root_db"
-DB_USER="${POSTGRES_USER}"
-DB_PORT="5433"
+# Variables
 DATE=$(date +"%Y%m%d%H%M%S")
-BACKUP_DIR_LOCAL="/media/backup/nocodb_bckp/short_term_bckp"
-BACKUP_DIR_DISTANT="/media/share/dbgi/nocodb_bckp/short_term_bckp"
+POSTGRES_DIR="/docker/nocodb/postgres"
+BACKUP_DIR_LOCAL="/media/backup/nocodb_bckp/short_term_bckp${DATE}"
+BACKUP_DIR_DISTANT="/media/share/dbgi/nocodb_bckp/short_term_bckp${DATE}"
 LOG_FILE="/media/backup/nocodb_bckp/short_term_bckp/bckp.log"
-BACKUP_FILE_LOCAL="${BACKUP_DIR_LOCAL}/${DB_NAME}_${DATE}.sql"
-BACKUP_FILE_DISTANT="${BACKUP_DIR_DISTANT}/${DB_NAME}_${DATE}.sql"
 RETAIN_BACKUPS=24
 
 # Redirect all output to the log file
@@ -18,14 +14,17 @@ exec &>> "$LOG_FILE"
 # Enable immediate exit on error
 set -e
 
-# Perform backup using psql
-psql -U "$DB_USER" -d "$DB_NAME" -p "$DB_PORT" -c "COPY (SELECT * FROM your_table) TO STDOUT" > "$BACKUP_FILE_LOCAL"
-psql -U "$DB_USER" -d "$DB_NAME" -p "$DB_PORT" -c "COPY (SELECT * FROM your_table) TO STDOUT" > "$BACKUP_FILE_DISTANT"
+mkdir $BACKUP_DIR_LOCAL
+mkdir $BACKUP_DIR_DISTANT
+
+# Perform backup
+tar -czvf "${BACKUP_DIR_LOCAL}/backup.tar.gz" -C $POSTGRES_DIR
+tar -czvf "${BACKUP_DIR_DISTANT}/backup.tar.gz" -C $POSTGRES_DIR
 
 # Check if backup was successful
 if [ $? -eq 0 ]; then
-    echo "Backup completed successfully: $BACKUP_FILE_LOCAL"
-    echo "Backup completed successfully: $BACKUP_FILE_DISTANT"
+    echo "Backup completed successfully: ${BACKUP_DIR_LOCAL}/backup.tar.gz"
+    echo "Backup completed successfully: ${BACKUP_DIR_DISTANT}/backup.tar.gz"
 else
     echo "Backup failed"
     exit 1
@@ -35,7 +34,7 @@ fi
 cleanup_backups() {
     local backup_dir="$1"
     if [ -n "$(ls -A "$backup_dir")" ]; then
-        ls -dt "$backup_dir"/* | tail -n +"$((RETAIN_BACKUPS+1))" | xargs rm -rf
+        ls -dt "$backup_dir"/* | tail -n +"$((RETAIN_BACKUPS+2))" | xargs rm -rf
     fi
 }
 
