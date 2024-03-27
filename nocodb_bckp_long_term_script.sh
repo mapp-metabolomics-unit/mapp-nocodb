@@ -6,7 +6,7 @@ POSTGRES_DIR="/docker/nocodb/postgres"
 BACKUP_DIR_LOCAL="/media/backup/nocodb_bckp/long_term_bckp"
 BACKUP_DIR_DISTANT="/media/share/dbgi/nocodb_bckp/long_term_bckp"
 LOG_FILE="/media/backup/nocodb_bckp/long_term_bckp/bckp.log"
-RETAIN_BACKUPS=2
+RETAIN_BACKUPS=52
 
 # Redirect all output to the log file
 exec &>> "$LOG_FILE"
@@ -33,10 +33,8 @@ fi
 cleanup_backups() {
     local backup_dir="$1"
     if [ -n "$(ls -A "$backup_dir")" ]; then
-        ls -dt "$backup_dir"/*
         ls -dt "$backup_dir"/* | tail -n +"$((RETAIN_BACKUPS+2))" | xargs rm -rf
     fi
 }
 
 cleanup_backups "$BACKUP_DIR_LOCAL"
-cleanup_backups "$BACKUP_DIR_DISTANT"

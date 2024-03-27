@@ -14,17 +14,16 @@ exec &>> "$LOG_FILE"
 # Enable immediate exit on error
 set -e
 
-mkdir $BACKUP_DIR_LOCAL
-mkdir $BACKUP_DIR_DISTANT
+mkdir -p "${BACKUP_DIR_LOCAL}/${DATE}"
+mkdir -p "${BACKUP_DIR_DISTANT}/${DATE}"
 
 # Perform backup
-tar -czvf "${BACKUP_DIR_LOCAL}/backup.tar.gz" -C "$POSTGRES_DIR" .
-tar -czvf "${BACKUP_DIR_DISTANT}/backup.tar.gz" -C "$POSTGRES_DIR" .
+tar -czf "${BACKUP_DIR_LOCAL}/${DATE}/backup.tar.gz" -C "$POSTGRES_DIR" .
+tar -czf "${BACKUP_DIR_DISTANT}/${DATE}/backup.tar.gz" -C "$POSTGRES_DIR" .
 
 # Check if backup was successful
 if [ $? -eq 0 ]; then
-    echo "Backup completed successfully: ${BACKUP_DIR_LOCAL}/backup.tar.gz"
-    echo "Backup completed successfully: ${BACKUP_DIR_DISTANT}/backup.tar.gz"
+    echo "Backup completed successfully"
 else
     echo "Backup failed"
     exit 1
@@ -34,7 +33,7 @@ fi
 cleanup_backups() {
     local backup_dir="$1"
     if [ -n "$(ls -A "$backup_dir")" ]; then
-        ls -dt "$backup_dir"/* | tail -n +"$((RETAIN_BACKUPS+1))" | xargs rm -rf
+        ls -dt "$backup_dir"/* | tail -n +"$((RETAIN_BACKUPS+2))" | xargs rm -rf
     fi
 }
 
